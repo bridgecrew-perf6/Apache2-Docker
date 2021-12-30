@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: httpd
+  name: httpd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpd
+  template:
+    metadata:
+      labels:
+        app: httpd
+    spec:
+      containers:
+      - image: httpd:2.4
+        name: httpd
+        volumeMounts:
+        - name: apache-conf
+          mountPath: "/usr/local/apache2/conf/httpd.conf"
+          readOnly: true
+      volumes:
+      - name: apache-conf
+        configMap:
+          name: httpd-conf
